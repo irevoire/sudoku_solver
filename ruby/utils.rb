@@ -41,8 +41,9 @@ def dump_table grid
 			print " " if x % 3 == 0
 		end
 		y += 1
-		puts if y % 3 == 0
+
 		puts
+		puts "\e[2K" if y % 3 == 0
 	end
 	for i in 0..(SIZE_OF_SUDOKU * 4 + 2)
 		print "_"
