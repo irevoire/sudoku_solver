@@ -41,7 +41,7 @@ def solve(grid, x = 0, y = 0)
 			end
 		else 
 			if (x & 2)
-				print "\e[0;0H"
+				print "\e[14A"
 				dump_table(grid)
 			end
 

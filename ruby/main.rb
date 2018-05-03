@@ -9,7 +9,7 @@ puts "Your grid ;"
 
 dump_table grid
 
-print "\e[2J"
+dump_table grid
 
 if !solve(grid)
 	puts "your grid cannot be solved"
@@ -17,6 +17,7 @@ if !solve(grid)
 	exit
 end
 
+				print "\e[14A"
 puts "solved grid ;"
 
 dump_table grid
