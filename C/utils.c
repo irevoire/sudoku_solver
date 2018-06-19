@@ -2,6 +2,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define HASH(x, y) \
+	((x) * 10 + (y))
+
 char *parse(FILE *input)
 {
 	char *grid = malloc(100);
@@ -18,7 +21,6 @@ char *parse(FILE *input)
 	{
 		current = line;
 
-		printf("len = %d\n", len);
 		for (x = 0; x < 9 && current < (line + len); x++, current++)
 		{
 			if (*current == ',' || *current == '\n')
@@ -26,13 +28,12 @@ char *parse(FILE *input)
 				x--;
 				continue;
 			}
-			printf("%c", *current);
 			if (*current == '_')
-				grid[x * 10 + y] = -1;
+				grid[HASH(x, y)] = -1;
 			else
-				grid[x * 10 + y] = *current - '0';
+				grid[HASH(x, y)] = *current - '0';
 		}
-		printf("\n");
+
 		y += 1;
 	}
 
@@ -59,10 +60,10 @@ void dump_table(char *grid)
 		for(int x = 0; x < 9;)
 		{
 			printf(" ");
-			if(grid[10 * x + y] == -1)
+			if(grid[HASH(x, y)] == -1)
 				printf("\e[31;1mU\e[m");
 			else
-				printf("\e[32;1m%d\e[m", grid[10 * x + y]);
+				printf("\e[32;1m%d\e[m", grid[HASH(x, y)]);
 			printf(" |");
 
 			x++;
@@ -70,7 +71,6 @@ void dump_table(char *grid)
 			if (x % 3 == 0)
 				printf(" ");
 		}
-
 
 		printf("\n");
 
