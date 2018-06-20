@@ -1,15 +1,21 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "solver.h"
 #include "utils.h"
 
 int main(void)
 {
-	char *grid;
+	char *grid = malloc(100);
 
-	grid = parse(stdin);
+	memset(grid, -2, 100);
+
+	parse(stdin, grid);
 
 	printf("Your grid ;\n");
+
+	dump_table(grid);
 
 	dump_table(grid);
 
@@ -24,6 +30,8 @@ int main(void)
 	printf("solved grid ;\n");
 
 	dump_table(grid);
+
+	free(grid);
 
 	return 0;
 }

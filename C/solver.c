@@ -23,8 +23,12 @@ static inline int include(char *grid, int x, int y, char value)
 	{
 		if (grid[HASH(n, y)] == value)
 			return 1;
-		if (grid[HASH_COL(x, n)] == value)
+		if (grid[HASH(x, n)] == value)
 			return 1;
+		/*
+		   if (grid[HASH_COL(x, n)] == value)
+			return 1;
+		 */
 		if (grid[HASH_BLOC(x, y, n)] == value)
 			return 1;
 	}
@@ -37,7 +41,7 @@ int solve(char *grid, int x, int y)
 	if (find_cell(grid, &x, &y))
 		return 1;
 
-	for (int i = 1; i < SIZE_OF_SUDOKU; i++)
+	for (int i = 1; i <= SIZE_OF_SUDOKU; i++)
 	{
 		if (include(grid, x, y, i))
 			continue;
