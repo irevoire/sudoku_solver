@@ -5,7 +5,7 @@ EXE := main
 
 all: $(EXE)
 
-main: main.o utils.o
+main: main.o utils.o solver.o
 	$(CC) $(CFLAGS) $^ -o $@
 
 main.o: main.c
@@ -18,4 +18,5 @@ solver.o: solver.c solver.h
 	$(CC) $(CFLAGS) -c $<
 
 clean:
-	rm *.o $(EXE)
+	rm -f *.o $(EXE)
+
