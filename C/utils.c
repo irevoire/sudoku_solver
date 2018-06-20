@@ -1,10 +1,11 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "utils.h"
 
 char *parse(FILE *input, char *grid)
 {
-	char *line, *current;
+	char *line = NULL, *current;
 	long unsigned len;
 	int read;
 
@@ -30,6 +31,8 @@ char *parse(FILE *input, char *grid)
 
 		y += 1;
 	}
+
+	free(line);
 
 	return grid;
 }
