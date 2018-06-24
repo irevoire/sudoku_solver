@@ -17,7 +17,7 @@ if !solve(grid)
 	exit
 end
 
-				print "\e[14A"
+print "\e[14A"
 puts "solved grid ;"
 
 dump_table grid
