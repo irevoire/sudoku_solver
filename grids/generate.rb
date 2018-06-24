@@ -8,7 +8,7 @@ require_relative "../ruby/utils"
 puts "You'll can now enter your own sudoku grid ;"
 puts "<SPC> is used to set an unknow cell"
 puts "<1-9> to set a number"
-puts "<s> to exit"
+puts "<q> to exit"
 puts
 
 grid = Array.new(9) { Array.new(9) }
@@ -21,14 +21,45 @@ for i in 0..(9 * 4 + 2)
 end
 puts
 
-for y in 0..8
+y = 0
+while y < 9
 	print "|"
-	for x in 0..8
-		print " " 
-		print "\e[41;1m \e[m\b"
+	x = 0
+	while x < 9
+		print "\e[1C"
 
 		input = STDIN.getch
-		exit if input == "s"
+		#         q    ctrl C
+		exit if ["q", "\u0003"].include?(input)
+
+		#   h   left   backspace
+		if ["h", "\D", "\177"].include?(input) and x > 0
+			print "\e[4D"
+			print "\e[1D" if x % 3 ==  0
+			x -= 1
+		end
+
+		#   l   broken   tab
+		if ["l", "\e[C", "\t"].include?(input) and x < 8
+			x += 1
+			print "\e[4C"
+			print "\e[1C" if x % 3 ==  0
+		end
+
+		#   k    down
+		if ["k", "\A"].include?(input) and y > 0
+			print "\e[1A"
+			print "\e[1A" if y % 3 ==  0
+			y -= 1
+		end
+
+		#   j    up
+		if ["j", "\B"].include?(input) and y < 8
+			y += 1
+			print "\e[1B"
+			print "\e[1B" if y % 3 ==  0
+		end
+
 
 		if input == " "
 			print "\e[33;1mU\e[m"
@@ -81,11 +112,3 @@ for y in 0..8
 end
 
 file.close
-
-
-
-
-
-
-
-
