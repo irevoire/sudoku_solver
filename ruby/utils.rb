@@ -1,5 +1,5 @@
 def parse input
-	grid = Array.new(SIZE_OF_SUDOKU) { Array.new(SIZE_OF_SUDOKU) }
+	grid = Array.new(9) { Array.new(9) }
 
 	y = 0
 	input.each_line do | l |
@@ -20,7 +20,7 @@ def parse input
 end
 
 def dump_table grid
-	for i in 0..(SIZE_OF_SUDOKU * 4 + 2)
+	for i in 0..(9 * 4 + 2)
 		print "_"
 	end
 	puts
@@ -45,7 +45,7 @@ def dump_table grid
 		puts
 		puts "\e[2K" if y % 3 == 0
 	end
-	for i in 0..(SIZE_OF_SUDOKU * 4 + 2)
+	for i in 0..(9 * 4 + 2)
 		print "_"
 	end
 	puts
