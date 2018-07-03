@@ -3,6 +3,7 @@
 require 'io/console'
 
 require_relative "../ruby/utils"
+require_relative "../ruby/solver"
 
 
 puts "You'll can now enter your own sudoku grid ;"
@@ -29,37 +30,41 @@ while y < 9
 		print "\e[1C"
 
 		input = STDIN.getch
+
+		if input == "\n"
+			puts "blabla"
+		end
+
 		#         q    ctrl C
 		exit if ["q", "\u0003"].include?(input)
 
-		#   h   left   backspace
-		if ["h", "\D", "\177"].include?(input) and x > 0
+		#   h   left  backspace
+		if ["h", "D", "\177"].include?(input) and x > 0
 			print "\e[4D"
 			print "\e[1D" if x % 3 ==  0
 			x -= 1
 		end
 
 		#   l   broken   tab
-		if ["l", "\e[C", "\t"].include?(input) and x < 8
+		if ["l", "C", "\t", 0x4d].include?(input) and x < 8
 			x += 1
 			print "\e[4C"
 			print "\e[1C" if x % 3 ==  0
 		end
 
 		#   k    down
-		if ["k", "\A"].include?(input) and y > 0
+		if ["k", "A"].include?(input) and y > 0
 			print "\e[1A"
 			print "\e[1A" if y % 3 ==  0
 			y -= 1
 		end
 
 		#   j    up
-		if ["j", "\B"].include?(input) and y < 8
+		if ["j", "B"].include?(input) and y < 8
 			y += 1
 			print "\e[1B"
 			print "\e[1B" if y % 3 ==  0
 		end
-
 
 		if input == " "
 			print "\e[33;1mU\e[m"
@@ -82,13 +87,15 @@ while y < 9
 	y += 1
 
 	puts
-	puts "\e[2K" if y % 3 == 0
-end
-for i in 0..(9 * 4 + 2)
-	print "_"
+	puts if y % 3 == 0
 end
 puts
 puts
+
+if !check(grid)
+	puts "\e[31;1mYour grid is not solvable\e[m\n"
+end
+
 
 # Now the grid is complete, we are gonna save it in some file
 
