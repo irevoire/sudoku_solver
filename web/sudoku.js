@@ -5,7 +5,6 @@ function validateAndGenerateSudokuGrid() {
     $('tr').each(function() {
         let tr = $(this);
         tr.find("input").each(function() {
-            console.log($(this));
             if (!regex.test($(this).val()))  {
                 $(this).addClass('error');
                 isValid = false;
@@ -23,18 +22,40 @@ function validateAndGenerateSudokuGrid() {
     return isValid ? sudokuGrid : undefined;
 }
 
-function sendAjax() {
-    console.log("J'ai envoyé la grille !");
+function update_grid(raw_grid) {
+	grid = raw_grid.split(/,|\n/g);
+
+	$('tr').each(function(i) {
+        let tr = $(this);
+        tr.find("input").each(function(j) {
+		$(this).val(grid[i*9+j]);
+        })
+    });
+}
+
+function sendAjax(sudokuGrid) {
+        $.ajax({url: 'http://irevoire.ovh:8888',
+        type: 'POST', 
+        data: "|" + sudokuGrid + "|",
+        success: function(data) {
+            res = JSON.parse(data);
+		if(res.state == "KO")
+			$("#answer").text("La grille n'est pas solvable").css("color", "red");
+		else
+		{
+			$("#answer").text("Grille résolue").css("color", "green");
+			update_grid(res.grid);
+		}
+        }
+	})
 }
 
 $(document).ready(function() {
         $('#submit').click(function() {
             let sudokuGrid = validateAndGenerateSudokuGrid();
 
-            console.log(sudokuGrid);
-
             if (undefined !== sudokuGrid)
-                sendAjax();
+                sendAjax(sudokuGrid);
         })
     }
 );
