@@ -25,3 +25,7 @@ tr:nth-child(3n) td {
 	display: block;
 	margin: 0 auto;
 }
+
+input.error {
+    border-color: red;
+}
