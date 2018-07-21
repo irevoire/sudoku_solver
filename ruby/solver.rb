@@ -1,10 +1,6 @@
-SIZE_OF_SUDOKU = 9
-SIZE_OF_BLOCK = Math.sqrt(SIZE_OF_SUDOKU)
-
-
 def find_cell(grid, x, y)
-	for j in y..(SIZE_OF_SUDOKU - 1)
-		for i in x..(SIZE_OF_SUDOKU - 1)
+	for j in y..8
+		for i in x..8
 			if grid[i][j] == nil
 				return false, i, j
 			end
@@ -23,7 +19,7 @@ def solve(grid, x = 0, y = 0)
 	col = grid.map { |l| l[y] }.compact
 	line = grid[x].compact
 
-	for i in 1..SIZE_OF_SUDOKU
+	for i in 1..9
 
 		if col.include?(i) || line.include?(i)
 			next
@@ -35,16 +31,11 @@ def solve(grid, x = 0, y = 0)
 			next
 		end
 
-		if (x == (SIZE_OF_SUDOKU - 1))
+		if (x == 8)
 			if solve(grid, 0, y + 1)
 				return true
 			end
 		else 
-			if (x & 2)
-				print "\e[14A"
-				dump_table(grid)
-			end
-
 			if solve(grid, x + 1, y)
 				return true
 			end
@@ -59,7 +50,7 @@ end
 
 def check(grid)
 	# Here we check if a line or column have the same element twice
-	for i in 0..(SIZE_OF_SUDOKU - 1)
+	for i in 0..8
 		col = grid.map { |l| l[i] }
 		line = grid[i]
 
@@ -76,11 +67,11 @@ def check(grid)
 		end
 	end
 
-	for y in 0..(SIZE_OF_BLOCK - 1)
-		for x in 0..(SIZE_OF_BLOCK - 1)
+	for y in 0..2
+		for x in 0..2
 			block = []
-			for index in 0..(SIZE_OF_BLOCK - 1)
-				block += grid[(x * SIZE_OF_BLOCK) + index][(y * SIZE_OF_BLOCK)..((y + 1) * SIZE_OF_BLOCK - 1)]
+			for index in 0..2
+				block += grid[(x * 3) + index][(y * 3)..((y + 1) * 3 - 1)]
 			end
 
 			block = block.compact

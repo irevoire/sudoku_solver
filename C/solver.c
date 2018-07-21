@@ -25,10 +25,6 @@ static inline int include(char *grid, int x, int y, char value)
 			return 1;
 		if (grid[HASH(x, n)] == value)
 			return 1;
-		/*
-		   if (grid[HASH_COL(x, n)] == value)
-			return 1;
-		 */
 		if (grid[HASH_BLOC(x, y, n)] == value)
 			return 1;
 	}
@@ -54,16 +50,8 @@ int solve(char *grid, int x, int y)
 				return 1;
 		}
 		else 
-		{
-			if (x & 2)
-			{
-				printf("\e[14A");
-				dump_table(grid);
-			}
-
 			if (solve(grid, x + 1, y))
 				return 1;
-		}
 	}
 
 	// we are going to backtrack
