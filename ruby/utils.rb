@@ -51,4 +51,14 @@ def dump_table grid
 	puts
 end
 
-
+def get_ascii_table grid
+	res = ""
+	for row in grid
+		for el in row
+			res += el == nil ? "_" : el.to_s
+			res += ","
+		end
+		res[res.size - 1] = "\n"
+	end
+	return  res
+end
