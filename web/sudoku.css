@@ -1,28 +1,26 @@
 table {
-	margin:1em auto;
+	margin: 1em auto;
+	border-collapse: collapse;
+}
+td, tr, input {
+	margin: 0px;
+	padding: 0px;
 }
 td, input {
 	font-size: 20px;
-	height:30px;
-	width:30px;
-	border:1px solid;
-	text-align:center;
-}
-td:first-child {
-	border-left:solid;
+	height: 30px;
+	width: 30px;
+	text-align: center;
 }
 td:nth-child(3n) {
-	border-right:solid ;
-}
-tr:first-child {
-	border-top:solid;
+	border-right: solid ;
 }
 tr:nth-child(3n) td {
-	border-bottom:solid ;
+	border-bottom: solid ;
 }
 
 #submit {
 	font-size: 20px;
-	display:block;
-	margin:0 auto;
+	display: block;
+	margin: 0 auto;
 }
