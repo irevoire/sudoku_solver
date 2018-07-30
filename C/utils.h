@@ -24,3 +24,5 @@ static inline int HASH_BLOC(int x, int y, int n)
 char *parse(FILE *input, char *grid);
 
 void dump_table(char *grid);
+
+char *get_ascii_table(char *grid);

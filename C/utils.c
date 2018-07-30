@@ -80,3 +80,28 @@ void dump_table(char *grid)
 
 	printf("\n");
 }
+
+char *get_ascii_table(char *grid)
+{
+	/* The string will contain all the table separated by commas with 10 \n */
+	char *res = malloc(9*9*2 + 10);
+	char *idx = res;
+
+	for(int y = 0; y < 9; y++)
+	{
+		for(int x = 0; x < 9; x++)
+		{
+			const char el = grid[HASH(x, y)];
+			*(idx++) = (el == -1 ? '_' : el + '0');
+			*(idx++) = ',';
+		}
+		*(idx - 1) = '\n';
+	}
+
+	*(idx - 1) = 0;
+
+	return res;
+}
+
+
+
