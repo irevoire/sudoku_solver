@@ -17,8 +17,6 @@ int main(void)
 
 	dump_table(grid);
 
-	dump_table(grid);
-
 	if (!solve(grid, 0, 0))
 	{
 		printf("your grid cannot be solved\n");
@@ -26,7 +24,6 @@ int main(void)
 		return -1;
 	}
 
-	printf("\e[14A");
 	printf("solved grid ;\n");
 
 	dump_table(grid);
