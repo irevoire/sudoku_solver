@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"sudoku"
+	"os"
 /*
 	"runtime"
 	"bytes"
@@ -10,7 +11,21 @@ import (
 )
 
 func main() {
-	var grid[]byte = sudoku.Parse()
+	var grid[]byte
+
+	if len(os.Args) < 2 {
+		grid = sudoku.Parse(os.Stdin)
+	} else if len(os.Args) == 2 {
+		file, err := os.Open(os.Args[1])
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(-2)
+		}
+		grid = sudoku.Parse(file)
+	} else {
+		fmt.Println("Error, too much arguments")
+		os.Exit(-1)
+	}
 
 	sudoku.DumpTable(grid)
 
