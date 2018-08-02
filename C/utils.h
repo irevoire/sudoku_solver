@@ -13,10 +13,8 @@ static inline int HASH(int x, int y)
 
 static inline int HASH_BLOC(int x, int y, int n)
 {
-	div_t ndiv = div(n, 3);
-
-	const int xp = (x / 3 * 3 + ndiv.quot) * 10;
-	const int yp = y / 3 * 3 + ndiv.rem;
+	const int xp = (x / 3 * 3 + n % 3) * 10;
+	const int yp = y / 3 * 3 + n / 3;
 
 	return xp + yp;
 }
