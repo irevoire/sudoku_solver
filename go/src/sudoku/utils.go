@@ -14,7 +14,34 @@ func HASH(x, y int) int {
 }
 
 func DumpTable(grid []byte) {
-	fmt.Println("dump grid")
+	fmt.Println(strings.Repeat("_", 9 * 4 + 2))
+
+	for y := 0; y < 9; {
+		fmt.Print("|")
+
+		for x := 0; x < 9; {
+			fmt.Print(" ")
+			if grid[HASH(x, y)] == UdefVal {
+				fmt.Print("\x1b[31;1mU\x1b[m")
+			} else {
+				fmt.Printf("\x1b[32;1m%d\x1b[m", grid[HASH(x, y)])
+			}
+			fmt.Print(" |")
+
+			x++
+
+			if x % 3 == 0 {
+				fmt.Print(" ")
+			}
+		}
+		fmt.Print("\n")
+		y++
+
+		if y % 3 == 0 {
+			fmt.Println("\x1b[2K")
+		}
+	}
+	fmt.Println(strings.Repeat("_", 9 * 4 + 2))
 }
 
 func Parse(input *os.File) (grid []byte) {
@@ -36,7 +63,7 @@ func Parse(input *os.File) (grid []byte) {
 
 		for x, el := range data {
 			if len(el) != 1 {
-			fmt.Println("B")
+				fmt.Println("B")
 				goto error
 			}
 			c := el[0]
@@ -52,7 +79,7 @@ func Parse(input *os.File) (grid []byte) {
 		y++
 	}
 	return
-error:
+	error:
 	fmt.Println("Your grid is invalid: ")
 	os.Exit(-3)
 	return
