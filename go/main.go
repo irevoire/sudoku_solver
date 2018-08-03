@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"sudoku"
+	"dumb"
 	"os"
 )
 
@@ -10,14 +10,14 @@ func main() {
 	var grid[]byte
 
 	if len(os.Args) < 2 {
-		grid = sudoku.Parse(os.Stdin)
+		grid = dumb.Parse(os.Stdin)
 	} else if len(os.Args) == 2 {
 		file, err := os.Open(os.Args[1])
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(-2)
 		}
-		grid = sudoku.Parse(file)
+		grid = dumb.Parse(file)
 		file.Close()
 	} else {
 		fmt.Println("Error, too much arguments")
@@ -25,14 +25,14 @@ func main() {
 	}
 
 	fmt.Println("Your grid ;")
-	sudoku.DumpTable(grid)
+	dumb.DumpTable(grid)
 
-	if !sudoku.Solve(grid, 0, 0) {
+	if !dumb.Solve(grid, 0, 0) {
 		fmt.Println("Your grid cannot be solved")
 		return
 	}
 
 	fmt.Println("solved grid ;")
-	sudoku.DumpTable(grid)
+	dumb.DumpTable(grid)
 }
 

@@ -1,4 +1,4 @@
-package sudoku
+package dumb
 
 func find_cell(grid []byte, xp, yp byte) (finished bool, x, y byte) {
 	x, y = xp, yp
