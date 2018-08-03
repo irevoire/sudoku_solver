@@ -1,10 +1,17 @@
 package dumb
 
+import (
+	"sudoku"
+)
+
+var SIZE_OF_SUDOKU byte = sudoku.SIZE_OF_SUDOKU
+var UdefVal byte = sudoku.UdefVal
+
 func find_cell(grid []byte, xp, yp byte) (finished bool, x, y byte) {
 	x, y = xp, yp
 	for ; y < SIZE_OF_SUDOKU; y++ {
 		for ; x < SIZE_OF_SUDOKU; x++ {
-			if grid[HASH(x, y)] == UdefVal {
+			if grid[sudoku.HASH(x, y)] == UdefVal {
 				finished = false
 				return
 			}
@@ -19,11 +26,11 @@ func find_cell(grid []byte, xp, yp byte) (finished bool, x, y byte) {
 func include(grid []byte, x, y, value byte) bool {
 	for n := byte(0); n < SIZE_OF_SUDOKU; n++ {
 		switch {
-		case grid[HASH(n, y)] == value:
+		case grid[sudoku.HASH(n, y)] == value:
 			return true
-		case grid[HASH(x, n)] == value:
+		case grid[sudoku.HASH(x, n)] == value:
 			return true
-		case grid[HASH_BLOC(x, y, n)] == value:
+		case grid[sudoku.HASH_BLOC(x, y, n)] == value:
 			return true
 		}
 	}
@@ -42,7 +49,7 @@ func Solve(grid []byte, x, y byte) bool {
 			continue
 		}
 
-		grid[HASH(x, y)] = i
+		grid[sudoku.HASH(x, y)] = i
 
 		if x == (SIZE_OF_SUDOKU - 1) {
 			if Solve(grid, 0, y + 1) {
@@ -56,7 +63,7 @@ func Solve(grid []byte, x, y byte) bool {
 	}
 
 	// we are going to backtrack
-	grid[HASH(x, y)] = UdefVal
+	grid[sudoku.HASH(x, y)] = UdefVal
 
 	return false
 
