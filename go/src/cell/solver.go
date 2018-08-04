@@ -3,6 +3,7 @@ package cell
 import (
 	"fmt"
 	"sudoku"
+	"time"
 )
 
 var finished chan bool
@@ -35,15 +36,14 @@ func removeElFromSlice(s []byte, el byte) []byte {
 func routine(grid []byte, x, y byte) {
 	possibilities := []byte{1, 2, 3, 4, 5, 6, 7, 8, 9}
 
-	tmp := 0
 	for len(possibilities) > 1 {
-			fmt.Println("MOI :", x + y *10)
+		//fmt.Println("MOI :", x + y *10)
 		for _, i := range possibilities {
 			if include(grid, x, y, i) {
 				possibilities = removeElFromSlice(possibilities, i)
 			}
 		}
-		tmp++
+		time.Sleep(100)
 	}
 
 	if len(possibilities) == 0 {
