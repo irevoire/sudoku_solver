@@ -1,5 +1,5 @@
 GOPATH := $(PWD)
-EXE := main
+EXE := main cell
 
 all: $(EXE)
 
