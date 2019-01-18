@@ -1,10 +1,10 @@
 GOPATH := $(PWD)
-EXE := main cell
+EXE := cell
 
 all: $(EXE)
 
-%: %.go
-	GOPATH=$(GOPATH) go build $^
+cell:
+	GOPATH=$(GOPATH) go build cell.go
 
 clean:
 	go clean

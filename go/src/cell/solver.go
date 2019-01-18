@@ -3,10 +3,14 @@ package cell
 import (
 	"fmt"
 	"sudoku"
-	"time"
 )
 
-var finished chan bool
+type cellData struct {
+	x             byte
+	y             byte
+	possibilities []byte
+	answer        chan byte
+}
 
 func include(grid []byte, x, y, value byte) bool {
 	for n := byte(0); n < sudoku.SIZE_OF_SUDOKU; n++ {
@@ -33,55 +37,74 @@ func removeElFromSlice(s []byte, el byte) []byte {
 	return s
 }
 
-func routine(grid []byte, x, y byte) {
+func cellRoutine(grid []byte, x, y byte, c chan cellData) {
 	possibilities := []byte{1, 2, 3, 4, 5, 6, 7, 8, 9}
+	answer := make(chan byte)
+	data := cellData{x, y, possibilities, answer}
 
-	for len(possibilities) > 1 {
-		//fmt.Println("MOI :", x + y *10)
+	for {
 		for _, i := range possibilities {
 			if include(grid, x, y, i) {
 				possibilities = removeElFromSlice(possibilities, i)
 			}
 		}
-		time.Sleep(100)
+		data.possibilities = possibilities
+		c <- data
+		res := <-data.answer
+		if res != 0 {
+			grid[sudoku.HASH(x, y)] = res
+			return
+		}
 	}
-
-	if len(possibilities) == 0 {
-		fmt.Println("Your grid is unsolvable, go fuck yo momma")
-		return
-	}
-
-	fmt.Println(x, y, "is", possibilities[0])
-
-	finished<-true
-	grid[sudoku.HASH(x, y)] = possibilities[0]
-
 }
 
-func Solve(grid []byte) bool {
-	finished = make(chan bool, 100)
+func blocRoutine(grid []byte, xb, yb byte, c chan bool) {
+	ccell := make(chan cellData, 9)
+	nb_routine := 0
 
-	nbRoutine := 0
-
-	for x := byte(0); x < 9; x++ {
-		for y := byte(0); y < 9; y++ {
+	// Launch all the sub goroutines
+	for xc := byte(0); xc < 3; xc++ {
+		for yc := byte(0); yc < 3; yc++ {
+			x, y := (xb*3 + xc), (yb*3 + yc)
 			if grid[sudoku.HASH(x, y)] == sudoku.UdefVal {
-				nbRoutine++
-				go routine(grid, x, y)
+				go cellRoutine(grid, x, y, ccell)
+				nb_routine++
 			}
 		}
 	}
+	for {
+		tab := make([]cellData, nb_routine)
+		for i := 0; i < nb_routine; i++ {
+			tab[i] = <-ccell
+		}
 
-	fmt.Println("I'll use", nbRoutine, " goroutines")
+		for _, el := range tab {
 
-	for nbRoutine > 0 {
-		<-finished
-		nbRoutine--
-		fmt.Println("there is still", nbRoutine, " goroutines")
+		}
+
+		fmt.Println(tab)
+		return
+	}
+}
+
+func Solve(grid []byte) bool {
+	cbloc := make(chan bool, 9)
+
+	for x := byte(0); x < 3; x++ {
+		for y := byte(0); y < 3; y++ {
+			go blocRoutine(grid, x, y, cbloc)
+		}
+	}
+
+	nbBloc := 9
+
+	for nbBloc > 0 {
+		<-cbloc
+		nbBloc--
+		fmt.Println("A bloc finished")
 		sudoku.DumpTable(grid)
 	}
 
 	return true
 
 }
-
